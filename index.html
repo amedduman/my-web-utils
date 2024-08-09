@@ -34,9 +34,9 @@
     <script>
         function extractUsernames() {
             const inputLinks = document.getElementById('inputLinks').value;
-            const links = inputLinks.split('\n');
+            const links = inputLinks.split(/[\n,]+/).map(link => link.trim());
             const usernames = links.map(link => {
-                const match = link.match(/instagram\.com\/([^/?]+)/);
+                const match = link.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/([^/?]+)/);
                 return match ? match[1] : '';
             }).filter(username => username !== '');
 
