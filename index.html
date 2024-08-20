@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,24 +12,29 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         textarea {
             width: 100%;
             height: 150px;
             margin-bottom: 10px;
         }
+
         button {
             padding: 10px 20px;
             background-color: #0095f6;
             color: white;
             border: none;
             cursor: pointer;
+            margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
     <h1>Instagram Username Extractor</h1>
     <textarea id="inputLinks" placeholder="Paste Instagram account links here, one per line"></textarea>
     <button onclick="extractUsernames()">Extract Usernames</button>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
     <textarea id="outputUsernames" placeholder="Extracted usernames will appear here" readonly></textarea>
 
     <script>
@@ -37,11 +43,21 @@
             const links = inputLinks.split(/[\n,]+/).map(link => link.trim());
             const usernames = links.map(link => {
                 const match = link.match(/(?:https?:\/\/)?(?:www\.)?instagram\.com\/([^/?]+)/);
-                return match ? match[1] : '';
+                return match ? `@${match[1]}` : '';
             }).filter(username => username !== '');
 
-            document.getElementById('outputUsernames').value = usernames.join('\n');
+            document.getElementById('outputUsernames').value = usernames.join('\n\n'); // Double newline for spacing
+        }
+
+        function copyToClipboard() {
+            const outputUsernames = document.getElementById('outputUsernames');
+            outputUsernames.select();
+            outputUsernames.setSelectionRange(0, 99999); // For mobile devices
+
+            document.execCommand('copy');
+            alert('Usernames copied to clipboard!');
         }
     </script>
 </body>
+
 </html>
